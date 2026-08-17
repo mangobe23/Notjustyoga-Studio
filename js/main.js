@@ -15,8 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---- language toggle ----
+  // Reading/writing localStorage can throw in some browsers (e.g. Safari
+  // private browsing, or strict privacy settings). If it does, we still
+  // want the toggle button to work for this visit — it just won't
+  // remember the choice next time. Every localStorage call is wrapped so
+  // a storage error can never stop the click handler below from attaching.
   var langBtn = document.querySelector(".lang-toggle");
-  var saved = localStorage.getItem("njy-lang") || "en";
+  var saved = "en";
+  try {
+    saved = localStorage.getItem("njy-lang") || "en";
+  } catch (e) {
+    saved = "en";
+  }
   setLang(saved);
 
   if (langBtn) {
@@ -28,7 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setLang(lang) {
     document.body.classList.toggle("lang-zh", lang === "zh");
-    localStorage.setItem("njy-lang", lang);
+    try {
+      localStorage.setItem("njy-lang", lang);
+    } catch (e) {
+      // storage blocked — ignore, toggle still works for this visit
+    }
     if (langBtn) langBtn.textContent = lang === "en" ? "中文" : "EN";
   }
 });
