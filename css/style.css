@@ -139,6 +139,8 @@ body.lang-zh .lang-zh.block{ display:block; }
   max-width:11.5em;
   color:var(--ink);
 }
+body.lang-zh .hero h1{ font-size:clamp(26px,4vw,46px); 
+}
 .hero-sub{
   font-size:18px; max-width:480px; color:var(--ink-soft); margin:24px 0 36px;
 }
